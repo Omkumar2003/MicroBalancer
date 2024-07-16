@@ -1,3 +1,4 @@
+package pkg.strategy;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -83,7 +84,7 @@ class RoundRobin extends Config {
     }
 }
 
-public class Main {
+public class Rb {
     public static void main(String[] args) {
         new Idk();
         new RoundRobin("request");
