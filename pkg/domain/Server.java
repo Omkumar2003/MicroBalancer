@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import helper.ReverseProxy;
 
 public class Server {
-    URL url;
+   public URL url;
     static ReverseProxy proxy;
     HashMap<String, String> metaData;
     boolean alive;
