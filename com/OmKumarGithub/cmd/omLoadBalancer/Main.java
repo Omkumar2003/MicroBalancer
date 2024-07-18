@@ -14,7 +14,6 @@ import pkg.health.Checker;
 import pkg.config.ServerList;
 import pkg.strategy.Rb;
 
-
 class ok {
     Config config;
     Map<String, ServerList> omServerList;
@@ -32,37 +31,44 @@ class ok {
                 servers.add(new Server(ur, rp, conf.services[i].replicas[j].metaData));
             }
 
-            
             Checker newChecker = new Checker(servers);
             ServerMap.put(conf.services[i].matcher, new ServerList(
-                
                     servers,
                     conf.services[i].name,
-                    new Rb(), 
+                    new Rb(),
                     newChecker));
 
         }
-        
-        ServerMap.forEach((k,v)->{
+
+        ServerMap.forEach((k, v) -> {
             v.healthChecker.start();
         });
 
-        this.config= conf;
-        this.omServerList= ServerMap;
+        this.config = conf;
+        this.omServerList = ServerMap;
+    }
+// it is not returning full serverlist ....it is just a name for omserverlist data's value type
+    public  ServerList findServiceList(String reqPath) {
+        final ServerList temp = null;
+        omServerList.forEach((k, v) -> {
+            if (reqPath.startsWith(k)) {
+                System.out.println("url found");
+                temp = v;
+            }
+            
+        });
+        return temp;
     }
 
-    public void findServiceList(String reqPath){
+    public void serveHttp() {
+
 
     }
 
-    public void serveHttp(){
-
-    }
-    
 }
 
 public class Main {
-public static void main(String[] args) {
-    
-}
+    public static void main(String[] args) {
+
+    }
 }
