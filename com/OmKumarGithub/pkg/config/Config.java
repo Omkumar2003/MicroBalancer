@@ -1,19 +1,14 @@
 package pkg.config;
 
-import domain.Service;
-import domain.Server;
-import strategy.Rb;
-import health.Checker;
+import pkg.domain.Service;
+// import pkg.domain.Server;
+// import pkg.strategy.Rb;
+// import pkg.health.Checker;
 
 public class Config {
-    Service[] services;
+   public Service[] services;
     String startergy;
 }
 
 
-class ServerList{
-    Server[] servers;
-    String Names;
-    Rb strategy;
-    Checker healthChecker;
-}
+
