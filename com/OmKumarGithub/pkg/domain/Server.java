@@ -10,15 +10,26 @@ import helper.ReverseProxy;
 
 public class Server {
    public URL url;
-    static ReverseProxy proxy;
+     ReverseProxy proxy;
     HashMap<String, String> metaData;
     boolean alive;
     ReentrantReadWriteLock mu;
 
     public static void Forward(HttpResponse res, HttpRequest req) {
-        proxy.serveHttp();
+        // proxy.serveHttp();
     }
 
+    
+
+    public Server(URL url, ReverseProxy proxy, HashMap<String,String> metaData) {
+        this.url = url;
+        this.proxy = proxy;
+        this.metaData = metaData;
+    }
+
+
+
+    
     public String GetMetaOrDefault(String key, String defVal) {
         String val = defVal;
         for (Map.Entry<String, String> entry : metaData.entrySet()) {
@@ -70,22 +81,4 @@ public class Server {
 
     }
 
-}
-
-class Replica {
-    String url;
-    HashMap<String, String> metaData;
-}
-
-class Service {
-    String name;
-    String matcher;
-    String strategy;
-    Replica[] replicas;
-
-}
-
-class Config {
-    Service[] services;
-    String startegy;
 }

@@ -9,7 +9,13 @@ public class Checker {
     Server[] servers;
     int period;
 
-    public void Start() {
+    public Checker(Server[] servers){
+
+        this.servers = servers;
+
+    }
+
+    public void start() {
         System.out.println("starting............");
         while (true) {
             for (int i = 0; i < servers.length; i++) {
