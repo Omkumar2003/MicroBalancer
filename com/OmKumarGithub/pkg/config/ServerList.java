@@ -4,14 +4,16 @@ package pkg.config;
 import pkg.domain.Server;
 import pkg.strategy.Rb;
 import pkg.health.Checker;
+import pkg.domain.Server;
+import java.util.*;
 
 public class ServerList{
-   public  Server[] servers;
+    ArrayList<Server> servers = new ArrayList<Server>();
    public String Names;
    public  Rb strategy;
    public  Checker healthChecker;
 
-    public ServerList(Server[] servers, String Names, Rb strategy, Checker healthChecker) {
+    public ServerList(ArrayList<Server> servers, String Names, Rb strategy, Checker healthChecker) {
         this.servers = servers;
         this.Names = Names;
         this.strategy = strategy;
