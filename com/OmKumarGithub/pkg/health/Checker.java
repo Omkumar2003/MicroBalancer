@@ -4,12 +4,14 @@ import pkg.domain.Server;
 import java.net.UnknownHostException;
 import java.net.Socket;
 import java.io.IOException;
+import pkg.domain.Server;
+import java.util.*;;
 
 public class Checker {
-    Server[] servers;
+    ArrayList<Server> servers = new ArrayList<Server>();
     int period;
 
-    public Checker(Server[] servers){
+    public Checker(ArrayList<Server> servers){
 
         this.servers = servers;
 
@@ -18,12 +20,12 @@ public class Checker {
     public void start() {
         System.out.println("starting............");
         while (true) {
-            for (int i = 0; i < servers.length; i++) {
+            for (int i = 0; i < servers.size(); i++) {
                 final int serverIndex = i;
                 // We are not able to access I inside the thread that's why we are declaring this here
                 
                 Thread T = new Thread(() -> {
-                    checkHealth(servers[serverIndex]); 
+                    checkHealth(servers.get(serverIndex)); 
                     // Just try to access some index it will not work we are not equal to access outside variable until its final
                     // I think it is done so that there can be a consistency in the values 
                 });

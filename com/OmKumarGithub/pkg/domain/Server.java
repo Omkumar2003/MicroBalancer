@@ -10,7 +10,7 @@ import helper.ReverseProxy;
 
 public class Server {
    public URL url;
-     ReverseProxy proxy;
+    ReverseProxy proxy;
     HashMap<String, String> metaData;
     boolean alive;
     ReentrantReadWriteLock mu;
