@@ -56,11 +56,11 @@ class Idk extends Config {
     }
 }
 
-class RoundRobin extends Config {
+class RoundRobin1 extends Config {
     static int Bouncer = 0;
     private final Lock lock = new ReentrantLock();
 
-    RoundRobin(String req) {
+    RoundRobin1(String req) {
         forwarder(req);
     }
 
@@ -87,6 +87,6 @@ class RoundRobin extends Config {
 public class Rb {
     public static void main(String[] args) {
         new Idk();
-        new RoundRobin("request");
+        new RoundRobin1("request");
     }
 }

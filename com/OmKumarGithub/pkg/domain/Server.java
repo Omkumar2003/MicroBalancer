@@ -32,6 +32,13 @@ public class Server {
     
     public String GetMetaOrDefault(String key, String defVal) {
         String val = defVal;
+        // for each 
+        // type eachElement: iterateObject
+        // you cannot do 
+        //         for (HashMap<String, String> entry : metaData) {
+        // HashMap - Getting "Can only iterate over an array or an instance of java.lang.Iterable"
+        // enumerate over entryset
+
         for (Map.Entry<String, String> entry : metaData.entrySet()) {
             if (entry.getKey().equals(key)) {
                 val = entry.getValue();
@@ -41,6 +48,7 @@ public class Server {
         return val;
     }
 
+    // 
     public int GetMetaOrDefaultInt(String key, int defaultVal) {
         String temp = "" + defaultVal + "";
         String val = GetMetaOrDefault(key, temp);
