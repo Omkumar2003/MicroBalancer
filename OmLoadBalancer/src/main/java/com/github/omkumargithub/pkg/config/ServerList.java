@@ -1,14 +1,18 @@
-package pkg.config;
+package com.github.omkumargithub.pkg.config;
+
 
 // import pkg.domain.Service;
-import pkg.domain.Server;
-import pkg.strategy.Istrategy;
-import pkg.health.Checker;
-import pkg.domain.Server;
+// import pkg.domain.Server;
+// import com.github.omkumargithub.pkg.domain.Service;
+// import pkg.strategy.Istrategy
+import com.github.omkumargithub.pkg.strategy.Istrategy;
+
+import com.github.omkumargithub.pkg.health.Checker;
+import com.github.omkumargithub.pkg.domain.Server;
 import java.util.*;
 
 public class ServerList{
-    ArrayList<Server> servers = new ArrayList<Server>();
+    ArrayList<Server> servers = new ArrayList<>();
    public String Names;
    public Istrategy  strategy;
    public  Checker healthChecker;

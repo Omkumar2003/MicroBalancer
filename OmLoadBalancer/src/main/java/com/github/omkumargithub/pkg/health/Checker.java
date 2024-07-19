@@ -1,14 +1,15 @@
-package pkg.health;
+package com.github.omkumargithub.pkg.health;
 
-import pkg.domain.Server;
+
+import com.github.omkumargithub.pkg.domain.Server;
 import java.net.UnknownHostException;
 import java.net.Socket;
 import java.io.IOException;
-import pkg.domain.Server;
+// import pkg.domain.Server;
 import java.util.*;;
 
 public class Checker {
-    ArrayList<Server> servers = new ArrayList<Server>();
+    ArrayList<Server> servers = new ArrayList<>();
     int period;
 
     public Checker(ArrayList<Server> servers){
@@ -34,7 +35,7 @@ public class Checker {
             
             try {
                 Thread.sleep(10000);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 // inform admin if there is no admin then u r offically cooked
             }
         }
@@ -71,3 +72,4 @@ public class Checker {
 
     }
 }
+
