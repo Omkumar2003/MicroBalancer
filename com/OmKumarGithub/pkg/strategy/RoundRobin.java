@@ -1,11 +1,12 @@
 package pkg.strategy;
 
 import pkg.domain.Server;
+import pkg.strategy.Istrategy;
 
-public class RoundRobin {
+public class RoundRobin implements Istrategy {
     int current =0 ;
 
-    Server next(Server[] servers){
+   public  Server next(Server[] servers){
       int  seen =0;
       Server picked = null;
 

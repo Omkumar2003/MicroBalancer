@@ -15,7 +15,7 @@ public class Server {
     boolean alive;
     ReentrantReadWriteLock mu;
 
-    public static void Forward(HttpResponse res, HttpRequest req) {
+    public  void Forward() {
         // proxy.serveHttp();
     }
 

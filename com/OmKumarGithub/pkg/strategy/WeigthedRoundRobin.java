@@ -1,8 +1,9 @@
 package pkg.strategy;
 
 import pkg.domain.Server;
+import pkg.strategy.Istrategy;
 
-public class WeigthedRoundRobin {
+public class WeigthedRoundRobin implements Istrategy {
     int[] count= null;
     int cur=0;
 

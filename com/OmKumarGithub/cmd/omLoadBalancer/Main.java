@@ -1,6 +1,7 @@
 package cmd.omLoadBalancer;
 
 import java.net.URL;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,16 @@ class ok {
         return temp;
     }
 
-    public void serveHttp() {
+    public void serveHttp(HttpRequest req) {
+        // 
+        ServerList sl = findServiceList(req.uri().getPath());
+        // 
+        // i know worst implementation......i can solve it .....but it will take time
+        Server next = sl.strategy.next(sl.servers);
+
+        // 
+        next.Forward();
+        // 
 
 
     }
