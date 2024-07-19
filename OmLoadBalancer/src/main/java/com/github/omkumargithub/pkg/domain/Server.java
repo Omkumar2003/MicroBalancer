@@ -1,12 +1,13 @@
-package pkg.domain;
+package com.github.omkumargithub.pkg.domain;
+
 
 import java.util.*;
 import java.net.*;
-import java.net.http.*;
+// import java.net.http.*;
 // import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import helper.ReverseProxy;
+import com.github.omkumargithub.helper.ReverseProxy;
 
 public class Server {
    public URL url;
@@ -90,3 +91,4 @@ public class Server {
     }
 
 }
+
