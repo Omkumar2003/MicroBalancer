@@ -1,6 +1,7 @@
 package cmd.omLoadBalancer;
 
 import java.net.URL;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,6 @@ import helper.ReverseProxy;
 import pkg.health.Checker;
 import pkg.config.ServerList;
 import pkg.strategy.Rb;
-
 
 class ok {
     Config config;
@@ -32,37 +32,53 @@ class ok {
                 servers.add(new Server(ur, rp, conf.services[i].replicas[j].metaData));
             }
 
-            
             Checker newChecker = new Checker(servers);
             ServerMap.put(conf.services[i].matcher, new ServerList(
-                
                     servers,
                     conf.services[i].name,
-                    new Rb(), 
+                    new Rb(),
                     newChecker));
 
         }
-        
-        ServerMap.forEach((k,v)->{
+
+        ServerMap.forEach((k, v) -> {
             v.healthChecker.start();
         });
 
-        this.config= conf;
-        this.omServerList= ServerMap;
+        this.config = conf;
+        this.omServerList = ServerMap;
+    }
+// it is not returning full serverlist ....it is just a name for omserverlist data's value type
+    public  ServerList findServiceList(String reqPath) {
+        final ServerList temp = null;
+        omServerList.forEach((k, v) -> {
+            if (reqPath.startsWith(k)) {
+                System.out.println("url found");
+                temp = v;
+            }
+            
+        });
+        return temp;
     }
 
-    public void findServiceList(String reqPath){
+    public void serveHttp(HttpRequest req) {
+        // 
+        ServerList sl = findServiceList(req.uri().getPath());
+        // 
+        // i know worst implementation......i can solve it .....but it will take time
+        Server next = sl.strategy.next(sl.servers);
+
+        // 
+        next.Forward();
+        // 
+
 
     }
 
-    public void serveHttp(){
-
-    }
-    
 }
 
 public class Main {
-public static void main(String[] args) {
-    
-}
+    public static void main(String[] args) {
+
+    }
 }
