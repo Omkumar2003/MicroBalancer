@@ -67,11 +67,21 @@ class Ok {
 
                             // handleClient function will give io exception .....
                             Thread thread = new Thread(() -> {
-                                // try {
-                                // // handleClient(clientSocket,ok);
-                                // } catch (IOException e) {
-                                // e.printStackTrace();
-                                // }
+                                try {
+                                    synchronized (servers) {
+                                        for (Server server : servers) {
+                                            if(ur==server.url){
+                                            server.handleClient(clientSocket);
+                                        }
+                                            // System.out.println(server.getName());
+                                        }
+                                    }
+
+
+                                // handleClient(clientSocket);
+                                } catch (IOException e) {
+                                e.printStackTrace();
+                                }
                             });
                             thread.start();
                         }
@@ -126,6 +136,9 @@ class Ok {
     }
 
     public void serveHttp(String req) {
+        ServerList sl = findServiceList("/");
+        Server s = sl.strategy.next(sl.servers);
+
 
         
         //

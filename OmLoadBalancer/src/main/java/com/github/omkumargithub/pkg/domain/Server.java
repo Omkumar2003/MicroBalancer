@@ -2,6 +2,10 @@ package com.github.omkumargithub.pkg.domain;
 
 
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.*;
 // import java.net.http.*;
 // import java.util.concurrent.*;
@@ -19,13 +23,44 @@ public class Server {
     public  String Forward() {
 
         // Actually this will have business logic but right now we will just return a simple string
-
         return "hello world ";
 
         // proxy.serveHttp();
     }
 
-    
+        public void handleClient(Socket clientSocket) throws IOException {
+        try {
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            String request = in.readLine();
+            System.out.println("Request received................ " + request);
+
+            OutputStream out = clientSocket.getOutputStream();
+            String responseBody = "response from the load balancer";
+
+            // this is copied .......bcoz i am not learnning this syntax
+            String temp = "HTTP/1.1 200 OK\r\n"
+                    + "Content-Length: " + responseBody.getBytes().length + "\r\n"
+                    + "Content-Type: text/plain\r\n"
+                    + "\r\n"
+                    + responseBody;
+
+            out.write(temp.getBytes());
+            out.flush();
+            out.close();
+            in.close();
+            // seeee........For the specific food the connexion is closed
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
     public Server(String url, ServerSocket proxy, HashMap<String,String> metaData) {
         this.url = url;

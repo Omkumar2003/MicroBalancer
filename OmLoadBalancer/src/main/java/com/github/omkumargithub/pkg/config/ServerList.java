@@ -12,7 +12,7 @@ import com.github.omkumargithub.pkg.domain.Server;
 import java.util.*;
 
 public class ServerList{
-    List<Server> servers = new ArrayList<>();
+    public List<Server> servers = new ArrayList<>();
    public String Names;
    public Istrategy  strategy;
    public  Checker healthChecker;
