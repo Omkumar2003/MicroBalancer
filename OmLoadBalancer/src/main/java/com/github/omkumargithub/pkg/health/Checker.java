@@ -9,16 +9,18 @@ import java.io.IOException;
 import java.util.*;;
 
 public class Checker {
-    ArrayList<Server> servers = new ArrayList<>();
+    List<Server> servers = new ArrayList<>();
     int period;
 
-    public Checker(ArrayList<Server> servers){
+    public Checker(List<Server> servers){
 
         this.servers = servers;
 
     }
 
     public void start() {
+
+    
         System.out.println("starting............");
         while (true) {
             for (int i = 0; i < servers.size(); i++) {

@@ -12,12 +12,12 @@ import com.github.omkumargithub.pkg.domain.Server;
 import java.util.*;
 
 public class ServerList{
-    ArrayList<Server> servers = new ArrayList<>();
+    List<Server> servers = new ArrayList<>();
    public String Names;
    public Istrategy  strategy;
    public  Checker healthChecker;
 
-    public ServerList(ArrayList<Server> servers, String Names, Istrategy strategy, Checker healthChecker) {
+    public ServerList(List<Server> servers, String Names, Istrategy strategy, Checker healthChecker) {
         this.servers = servers;
         this.Names = Names;
         this.strategy = strategy;

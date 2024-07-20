@@ -5,6 +5,6 @@ package com.github.omkumargithub.pkg.strategy;
 import com.github.omkumargithub.pkg.domain.Server;
 
 public interface Istrategy {
-   Server next(Server[] servers);
+   static Server next(Server[] servers){return null;}
 }
 
