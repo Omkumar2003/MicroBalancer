@@ -22,7 +22,6 @@ import com.github.omkumargithub.helper.ReverseProxy;
 import com.github.omkumargithub.pkg.health.Checker;
 import com.github.omkumargithub.pkg.config.ServerList;
 import com.github.omkumargithub.pkg.strategy.StrategyFactory;
-import com.github.omkumargithub.pkg.strategy.RoundRobin;
 
 class Ok {
     Config config;
@@ -65,7 +64,8 @@ class Ok {
                             Socket clientSocket = serverSocket.accept();
                             // why accept? bcoz it is a matcher It matches all the requests came from
                             // different clients to the load balancer server different ports
-                            System.out.println("client connected on target Server......... " + clientSocket);
+                            // System.out.println("client connected on target Server......... " +
+                            // clientSocket);
 
                             // handleClient function will give io exception .....
                             Thread thread = new Thread(() -> {
@@ -128,7 +128,7 @@ class Ok {
         return temp;
     }
 
-    public void serveHttp(Socket clientSocket) {
+    public void serveHttp(Socket clientSocket) throws IOException {
         String LoadBalancerToTargetServers = LoadBalancerToTargetServers();
 
         try {
@@ -167,6 +167,7 @@ class Ok {
             URL url = new URL(s.url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuilder response = new StringBuilder();
@@ -186,31 +187,43 @@ class Ok {
 
 public class Main {
     public static void main(String[] args) {
-
-        int port = 8080;
-        // handleClient humein io exception dega in thread .......so basically it is a
-        // wrapper of a wrapper
+        int port = 3000;
+        String filePath = "OmLoadBalancer\\src\\main\\resouces\\wConfig.yaml";
+    
         try {
-
-            // first start lOAD BAlancer server
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Load Balancer  started on port " + port);
-
-            // then start target servers
-            Config config = new Config();
-            Ok ok = new Ok(config);
-
-            while (true) {// infinte listen
-
+            System.out.println("Load Balancer started on port " + port);
+    
+            // Using volatile to ensure visibility across threads
+            volatile Ok ok = null;
+    
+            // Start a thread to initialize Ok object
+            Thread okThread = new Thread(() -> {
+                Config config = Config.loadConfigFromFile(filePath);
+                ok = new Ok(config);
+            });
+            okThread.start();
+    
+            // Wait for Ok initialization to complete
+            synchronized (okThread) {
+                while (ok == null) {
+                    try {
+                        okThread.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+    
+            while (true) {
                 Socket clientSocket = serverSocket.accept();
-                // why accept? bcoz it is a matcher It matches all the requests came from
-                // different clients to the load balancer server different ports
-                System.out.println("client connected On load Balancer......... " + clientSocket);
-
-                // handleClient function will give io exception .....
+                System.out.println("Client connected on load balancer: " + clientSocket);
+    
                 Thread thread = new Thread(() -> {
                     try {
-                        handleClient(clientSocket, ok);
+                        System.out.println("Client connected on target server: " + clientSocket);
+                        ok.serveHttp(clientSocket);
+    
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -220,12 +233,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-    private static void handleClient(Socket clientSocket, Ok ok) throws IOException {
-        ok.serveHttp(clientSocket);
-
-    }
-
+    
 }

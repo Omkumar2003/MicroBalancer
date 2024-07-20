@@ -11,24 +11,18 @@ public class RoundRobin implements Istrategy {
 
      @Override
      public  Server next(List<Server> servers) {
-        int seen = 0;
-        Server picked = null;
 
-        while (seen < servers.size()) {
 
-            picked = servers.get(current);
+        for(int i = 0 ; i<servers.size();i++){
+            Server server = servers.get(current);
             current = (current + 1) % servers.size();
-            if (picked.isAlive()) {
-                break;
+            if (server.isAlive()) {
+                return server;
             }
-            seen++;
-        }
-        if (picked == null || seen == servers.size()) {
-            System.out.println("all servers are down");
-            return null;
-        }
 
-        return picked;
+        }
+        System.out.println("All servers are down");
+        return null;
     }
 
     

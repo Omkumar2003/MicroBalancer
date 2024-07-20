@@ -14,17 +14,33 @@ public class Config {
 
     String startegy;
 
-    public Config() {
+
+
+
+    public static Config loadConfigFromFile(String filePath) {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
 
         try {
-            Config config = mapper.readValue(new File("OmLoadBalancer\\src\\main\\resouces\\config.yaml"), Config.class);
-
+            System.out.println(mapper);
+            return mapper.readValue(new File(filePath), Config.class);
         } catch (IOException e) {
             System.out.println(e);
+            return null; // Handle exception properly in your application
         }
     }
+
+    // public Config() {
+    //     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    //     mapper.findAndRegisterModules();
+
+    //     try {
+    //         Config config = mapper.readValue(new File("OmLoadBalancer\\src\\main\\resouces\\wConfig.yaml"), Config.class);
+
+    //     } catch (IOException e) {
+    //         System.out.println(e);
+    //     }
+    // }
 }
 
 

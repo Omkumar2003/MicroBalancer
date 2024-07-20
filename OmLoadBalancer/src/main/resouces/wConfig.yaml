@@ -4,8 +4,8 @@ services:
   matcher: "/"
   replicas:
   - url: http://127.0.0.1:8081
-    metadata:
+    metaData:  # Use metaData instead of metadata
       weight: 10
   - url: http://127.0.0.1:8082
-    metadata:
+    metaData:  # Use metaData instead of metadata
       weight: 5
