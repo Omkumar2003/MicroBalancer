@@ -10,19 +10,24 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import com.github.omkumargithub.helper.ReverseProxy;
 
 public class Server {
-   public URL url;
-    ReverseProxy proxy;
+   public String url;
+   ServerSocket proxy;
     HashMap<String, String> metaData;
     boolean alive;
     ReentrantReadWriteLock mu;
 
-    public  void Forward() {
+    public  String Forward() {
+
+        // Actually this will have business logic but right now we will just return a simple string
+
+        return "hello world ";
+
         // proxy.serveHttp();
     }
 
     
 
-    public Server(URL url, ReverseProxy proxy, HashMap<String,String> metaData) {
+    public Server(String url, ServerSocket proxy, HashMap<String,String> metaData) {
         this.url = url;
         this.proxy = proxy;
         this.metaData = metaData;

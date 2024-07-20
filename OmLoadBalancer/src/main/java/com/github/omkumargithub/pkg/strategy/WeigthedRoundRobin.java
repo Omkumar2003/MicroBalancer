@@ -3,11 +3,11 @@ package com.github.omkumargithub.pkg.strategy;
 import com.github.omkumargithub.pkg.domain.Server;
 
 public class WeigthedRoundRobin implements Istrategy {
-    int[] count = null;
-    int cur = 0;
+   static int[] count = null;
+   static int cur = 0;
 
-    @Override
-    public Server next(Server[] servers) {
+    // @Override
+    public static Server next(Server[] servers) {
 
         // first time
         if (count == null) {

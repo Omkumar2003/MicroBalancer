@@ -5,10 +5,10 @@ import com.github.omkumargithub.pkg.domain.Server;
 // import com.github.omkumargithub.pkg.strategy.Istrategy;
 
 public class RoundRobin implements Istrategy {
-    int current = 0;
+  static   int current = 0;
 
-    @Override
-    public Server next(Server[] servers) {
+    //  @Override
+     public static Server next(Server[] servers) {
         int seen = 0;
         Server picked = null;
 
