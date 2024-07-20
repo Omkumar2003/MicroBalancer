@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.github.omkumargithub.pkg.domain.Server;
 
-public class WeigthedRoundRobin implements Istrategy {
+public class WeightedRoundRobin implements Istrategy {
 
     int[] count = null;
     int cur = 0;

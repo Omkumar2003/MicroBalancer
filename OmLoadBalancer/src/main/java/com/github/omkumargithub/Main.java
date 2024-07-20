@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
+import java.net.URL;
+import java.net.HttpURLConnection;
 
 import com.github.omkumargithub.pkg.config.Config;
 // import com.github.omkumargithub.pkg.domain.Service;
@@ -19,7 +21,7 @@ import com.github.omkumargithub.pkg.domain.Server;
 import com.github.omkumargithub.helper.ReverseProxy;
 import com.github.omkumargithub.pkg.health.Checker;
 import com.github.omkumargithub.pkg.config.ServerList;
-// import com.github.omkumargithub.pkg.strategy.Istrategy;
+import com.github.omkumargithub.pkg.strategy.StrategyFactory;
 import com.github.omkumargithub.pkg.strategy.RoundRobin;
 
 class Ok {
@@ -70,17 +72,16 @@ class Ok {
                                 try {
                                     synchronized (servers) {
                                         for (Server server : servers) {
-                                            if(ur==server.url){
-                                            server.handleClient(clientSocket);
-                                        }
+                                            if (ur == server.url) {
+                                                server.handleClient(clientSocket);
+                                            }
                                             // System.out.println(server.getName());
                                         }
                                     }
 
-
-                                // handleClient(clientSocket);
+                                    // handleClient(clientSocket);
                                 } catch (IOException e) {
-                                e.printStackTrace();
+                                    e.printStackTrace();
                                 }
                             });
                             thread.start();
@@ -100,9 +101,8 @@ class Ok {
             ServerMap.put(conf.services.get(i).matcher, new ServerList(
                     servers,
                     conf.services.get(i).name,
-                    new RoundRobin(),
+                    new StrategyFactory(conf.services.get(i).strategy).getStrategy(),
                     newChecker));
-
         }
 
         ServerMap.forEach((k, v) -> {
@@ -125,31 +125,61 @@ class Ok {
                 temp = entry.getValue();
             }
         }
-        // omServerList.forEach((k, v) -> {
-        // if (reqPath.startsWith(k)) {
-        // System.out.println("url found");
-        // temp = v;
-        // }
-
-        // });
         return temp;
     }
 
-    public void serveHttp(String req) {
+    public void serveHttp(Socket clientSocket) {
+        String LoadBalancerToTargetServers = LoadBalancerToTargetServers();
+
+        try {
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            String request = in.readLine();
+            System.out.println("Request received................ " + request);
+
+            OutputStream out = clientSocket.getOutputStream();
+
+            // this is copied .......bcoz i am not learnning this syntax
+            String temp = "HTTP/1.1 200 OK\r\n"
+                    + "Content-Length: " + LoadBalancerToTargetServers.getBytes().length + "\r\n"
+                    + "Content-Type: text/plain\r\n"
+                    + "\r\n"
+                    + LoadBalancerToTargetServers;
+
+            out.write(temp.getBytes());
+            out.flush();
+            out.close();
+            in.close();
+            // seeee........For the specific food the connexion is closed
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String LoadBalancerToTargetServers() {
         ServerList sl = findServiceList("/");
         Server s = sl.strategy.next(sl.servers);
+        String temp = "";
+        // logic for target service hitLer
+        try {
+            URL url = new URL(s.url);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            temp = response.toString();
+            in.close();
+        } catch (Exception e) {
 
+        }
 
-        
-        //
-        // ServerList sl = findServiceList(req.uri().getPath());
-
-        // Server next = sl.strategy.next(sl.servers);
-
-        //
-        // next.Forward();
-        //
-
+        return temp;
     }
 
 }
@@ -194,38 +224,8 @@ public class Main {
     }
 
     private static void handleClient(Socket clientSocket, Ok ok) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        ok.serveHttp(clientSocket);
 
-        String request = in.readLine();
-        ok.serveHttp(request);
-
-        // try {
-
-        // BufferedReader in = new BufferedReader(new
-        // InputStreamReader(clientSocket.getInputStream()));
-
-        // String request = in.readLine();
-        // System.out.println("Request received................ " + request);
-
-        // OutputStream out = clientSocket.getOutputStream();
-        // String responseBody = "response from the load balancer";
-
-        // // this is copied .......bcoz i am not learnning this syntax
-        // String temp = "HTTP/1.1 200 OK\r\n"
-        // + "Content-Length: " + responseBody.getBytes().length + "\r\n"
-        // + "Content-Type: text/plain\r\n"
-        // + "\r\n"
-        // + responseBody;
-
-        // out.write(temp.getBytes());
-        // out.flush();
-        // out.close();
-        // in.close();
-        // // seeee........For the specific food the connexion is closed
-        // clientSocket.close();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
 }

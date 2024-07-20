@@ -34,10 +34,10 @@ public class Server {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             String request = in.readLine();
-            System.out.println("Request received................ " + request);
+            System.out.println("Request received by target server................ " + request);
 
             OutputStream out = clientSocket.getOutputStream();
-            String responseBody = "response from the load balancer";
+            String responseBody = "response from the target server to load balancer";
 
             // this is copied .......bcoz i am not learnning this syntax
             String temp = "HTTP/1.1 200 OK\r\n"
