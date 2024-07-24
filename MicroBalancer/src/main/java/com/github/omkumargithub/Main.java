@@ -277,7 +277,7 @@ public class Main {
             // then start target servers
             Thread th1 = new Thread(() -> {
                 // String Filepath = "C:\\Users\\OM KUMAR\\Desktop\\New
-                // folder\\OmLoadBalancer\\src\\main\\resouces\\wConfig2.yaml";
+                // folder\\MicroBalancer\\src\\main\\resouces\\wConfig2.yaml";
                 Config config = Config.loadConfigFromFile(Filepath);
                 setsharedOk(new Ok(config));
 

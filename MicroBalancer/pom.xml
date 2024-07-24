@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.OmKumarGithub</groupId>
-  <artifactId>OmLoadBalancer</artifactId>
+  <artifactId>MicroBalancer</artifactId>
   <version>1.0</version>
 
-  <name>OmLoadBalancer</name>
+  <name>MicroBalancer</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
