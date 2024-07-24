@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.github.omkumargithub.pkg.config.Config;
 import com.github.omkumargithub.pkg.config.ServerList;
@@ -113,7 +114,8 @@ class Ok {
         // the main purpose of this ServerMap is tht we can check health
         HashMap<String, ServerList> ServerMap = giveServerMap(conf);
 
-        // this funcking IDIOT FUNCTION WAS BLOCKING A CALL ......................I SPENT 2
+        // this funcking IDIOT FUNCTION WAS BLOCKING A CALL ......................I
+        // SPENT 2
         // DAYS TO FIND THIS FUCKING PROBLEM
         Thread namingIsTough = new Thread(() -> {
             ServerMap.forEach((k, v) -> {
@@ -147,7 +149,6 @@ class Ok {
 
         try {
             // this req is from client
-          
 
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             StringBuilder requestBuilder = new StringBuilder();
@@ -155,10 +156,10 @@ class Ok {
             while ((line = in.readLine()) != null && !line.isEmpty()) {
                 requestBuilder.append(line).append("\r\n");
             }
-    
+
             // Append the last line which is empty (end of headers)
             requestBuilder.append("\r\n");
-    
+
             String request = requestBuilder.toString();
 
             System.out.println("Request received By Load Balancer by client ................ \n" + request);
@@ -191,7 +192,7 @@ class Ok {
         String temp = "";
         // logic for target service hitLer
         try {
-            System.out.println("Strategy Decided to use this Relpica    "+ s.url);
+            System.out.println("Strategy Decided to use this Relpica    " + s.url);
 
             URL url = new URL(s.url);
             // URL url = new URL("http://127.0.0.1:8082");
@@ -199,7 +200,8 @@ class Ok {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            BufferedReader ResultFromTargetServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader ResultFromTargetServer = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
             String ResultLine;
             StringBuilder resplonseGivenByTargetServer = new StringBuilder();
             while ((ResultLine = ResultFromTargetServer.readLine()) != null) {
@@ -228,19 +230,54 @@ public class Main {
         return sharedOk;
     }
 
+    // I know this is the most idiotic thing a person can do.............But I'm not
+    // able to understand how well the path actually works in Java
+    public static String doublingSlash(String s) {
+        String result = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '/') {
+                result += "//";
+            } else {
+                result += s.charAt(i);
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
 
-        int port = 3000;
+        int port;
 
         try {
 
             // first start lOAD BAlancer server
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Give the Load Balancer Port number if typed wrong default port 3000 will open");
+            System.out.println("Port number Should be in the range of 8000 - 8100 ");
+            try {
+                int temp = Integer.parseInt(sc.nextLine());
+                if (temp > 8000 && temp < 8100) {
+                    port = temp;
+                } else {
+                    port = 3000;
+                }
+            } catch (Exception e) {
+                port = 3000;
+            }
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Load Balancer  started on port " + port);
 
+            System.out.print("Provide ABSOLUTE path of YAML file :");
+
+            // System.out.println("Current working directory: " +
+            // System.getProperty("user.dir"));
+
+            String Filepath = sc.nextLine().replace("\\", "\\\\");
+
             // then start target servers
             Thread th1 = new Thread(() -> {
-                String Filepath = "C:\\Users\\OM KUMAR\\Desktop\\New folder\\OmLoadBalancer\\src\\main\\resouces\\wConfig2.yaml";
+                // String Filepath = "C:\\Users\\OM KUMAR\\Desktop\\New
+                // folder\\OmLoadBalancer\\src\\main\\resouces\\wConfig2.yaml";
                 Config config = Config.loadConfigFromFile(Filepath);
                 setsharedOk(new Ok(config));
 
@@ -253,7 +290,8 @@ public class Main {
                     while (true) {// infinte listen
                         // serverSocket.accept(); it is a blocking call
                         Socket clientSocket = serverSocket.accept();
-                        System.out.println("Client connected On load Balancer with a socket Object......... " + clientSocket);
+                        System.out.println(
+                                "Client connected On load Balancer with a socket Object......... " + clientSocket);
 
                         // handleClient function will give io exception .....
                         Thread thread = new Thread(() -> {
