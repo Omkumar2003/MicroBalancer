@@ -65,7 +65,7 @@ public class Server {
                         + "Content-Length: " + responseBody.getBytes().length + "\r\n"
                         + "Content-Type: text/plain\r\n"
                         + "\r\n"
-                        + responseBody;cls
+                        + responseBody;
 
                 out.write(temp.getBytes());
                 out.flush();
