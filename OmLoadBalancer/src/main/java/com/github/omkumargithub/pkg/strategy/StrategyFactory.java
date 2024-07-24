@@ -1,19 +1,26 @@
 package com.github.omkumargithub.pkg.strategy;
 
+import java.util.List;
+
 import com.github.omkumargithub.pkg.domain.Server;
 
 public class StrategyFactory {
+    private final Istrategy strategy;
 
-    public Server helper(String strat, Server[] servers) {
-        Server temp = null;
+    public StrategyFactory(String strat) {
         switch (strat) {
-            case "RR":
-                temp = RoundRobin.next(servers);
+            case "RoundRobin":
+                this.strategy = new RoundRobin();
                 break;
-            case "WRR":
-                temp = WeigthedRoundRobin.next(servers);
+            case "WeightedRoundRobin":
+                this.strategy = new WeightedRoundRobin();
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown strategy: " + strat);
         }
-        return temp;
+    }
+
+    public Istrategy getStrategy() {
+        return this.strategy;
     }
 }

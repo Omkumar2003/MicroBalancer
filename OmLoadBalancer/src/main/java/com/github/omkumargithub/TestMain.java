@@ -14,7 +14,7 @@ import java.net.Socket;
 // well using javax.servlet ......gives lot of problem rather than solution ........bcoz servlet made for client server vut we want server to server 
 public class TestMain {
     public static void main(String[] args) {
-        int port = 8085;
+        int port = 30000;
         // handleClient humein io exception dega in thread .......so basically it is a
         // wrapper of a wrapper
         try {
