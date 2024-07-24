@@ -134,7 +134,7 @@ class Ok {
 
         for (Map.Entry<String, ServerList> entry : omServerList.entrySet()) {
             if (reqPath.startsWith(entry.getKey())) {
-                System.out.println("url found");
+                // System.out.println("url found");
                 temp = entry.getValue();
             }
         }
@@ -147,9 +147,21 @@ class Ok {
 
         try {
             // this req is from client
+          
+
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String request = in.readLine();
-            System.out.println("Request received................ " + request);
+            StringBuilder requestBuilder = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null && !line.isEmpty()) {
+                requestBuilder.append(line).append("\r\n");
+            }
+    
+            // Append the last line which is empty (end of headers)
+            requestBuilder.append("\r\n");
+    
+            String request = requestBuilder.toString();
+
+            System.out.println("Request received By Load Balancer by client ................ \n" + request);
 
             OutputStream out = clientSocket.getOutputStream();
 
@@ -173,24 +185,28 @@ class Ok {
 
     public String reqResultOfLoadBalancerToTarget() {
         ServerList sl = findServiceList("/");
+        System.out.println("Choosing strategy accordindg to the startergy given");
+
         Server s = sl.strategy.next(sl.servers);
         String temp = "";
         // logic for target service hitLer
         try {
+            System.out.println("Strategy Decided to use this Relpica    "+ s.url);
+
             URL url = new URL(s.url);
             // URL url = new URL("http://127.0.0.1:8082");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            BufferedReader ResultFromTargetServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String ResultLine;
+            StringBuilder resplonseGivenByTargetServer = new StringBuilder();
+            while ((ResultLine = ResultFromTargetServer.readLine()) != null) {
+                resplonseGivenByTargetServer.append(ResultLine);
             }
-            temp = response.toString();
-            in.close();
+            temp = resplonseGivenByTargetServer.toString();
+            ResultFromTargetServer.close();
         } catch (IOException e) {
 
         }
@@ -237,7 +253,7 @@ public class Main {
                     while (true) {// infinte listen
                         // serverSocket.accept(); it is a blocking call
                         Socket clientSocket = serverSocket.accept();
-                        System.out.println("client connected On load Balancer......... " + clientSocket);
+                        System.out.println("Client connected On load Balancer with a socket Object......... " + clientSocket);
 
                         // handleClient function will give io exception .....
                         Thread thread = new Thread(() -> {

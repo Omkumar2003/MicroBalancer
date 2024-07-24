@@ -27,10 +27,6 @@ public class Server {
         try {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            // String request = in.readLine();
-
-
             StringBuilder requestBuilder = new StringBuilder();
             String line;
             while ((line = in.readLine()) != null && !line.isEmpty()) {
@@ -59,7 +55,7 @@ public class Server {
             } else {
                 // System.out.println("client connected on target Server......... " + clientSocket);
 
-                System.out.println("client Request received by target server................ " + request);
+                System.out.println("client Request received by target server................\n " + request);
 
                 // OutputStream out = clientSocket.getOutputStream();
                 String responseBody = "response from the target server to load balancer";
@@ -69,7 +65,7 @@ public class Server {
                         + "Content-Length: " + responseBody.getBytes().length + "\r\n"
                         + "Content-Type: text/plain\r\n"
                         + "\r\n"
-                        + responseBody;
+                        + responseBody;cls
 
                 out.write(temp.getBytes());
                 out.flush();
