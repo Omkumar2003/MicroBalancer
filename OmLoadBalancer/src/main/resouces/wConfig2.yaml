@@ -1,0 +1,14 @@
+services:
+  - name: service1
+    strategy: WeightedRoundRobin
+    matcher: "/"
+    replicas:
+      - url: http://127.0.0.1:8081
+        metaData:
+          weight: 10
+      - url: http://127.0.0.1:8082
+        metaData:
+          weight: 5
+
+
+

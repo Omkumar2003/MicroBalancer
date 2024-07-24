@@ -1,16 +1,14 @@
 package com.github.omkumargithub.pkg.health;
 
 
-import com.github.omkumargithub.pkg.domain.Server;
-import java.net.UnknownHostException;
-import java.net.HttpURLConnection;
-import java.net.Socket;
-import java.net.URL;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-// import pkg.domain.Server;
-import java.util.*;;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.github.omkumargithub.pkg.domain.Server;
+;
 
 public class Checker {
     List<Server> servers = new ArrayList<>();
@@ -39,7 +37,9 @@ public class Checker {
             }
             
             try {
-                Thread.sleep(30000);
+                // Thread.sleep(30000);
+                Thread.sleep(60000);
+
             } catch (InterruptedException e) {
                 // inform admin if there is no admin then u r offically cooked
             }
@@ -64,7 +64,7 @@ public class Checker {
                     server.setLiveness(true);
                     System.out.println("    Server  " + server.url +"    SERVER IS DEAD");
                 }else{
-                    System.out.println("    Server  " + server.url +"   SERVER WORKING CORRECTCLY");
+                    System.out.println("    Server  " + server.url +"   SERVER WORKING CORRECTLY");
                 }
             
             }
