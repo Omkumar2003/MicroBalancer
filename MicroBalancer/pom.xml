@@ -65,6 +65,14 @@
                     <goals>
                         <goal>shade</goal>
                     </goals>
+                    <configuration>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.github.omkumargithub.Main</mainClass>
+                            </transformer>
+                        </transformers>
+                        <createDependencyReducedPom>true</createDependencyReducedPom>
+                    </configuration>
                 </execution>
             </executions>
         </plugin>
@@ -86,6 +94,45 @@
         <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.22.1</version>
+        </plugin>
+        <plugin>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>2.4.1</version>
+            <executions>
+                <execution>
+                    <id>l4j-gui</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>launch4j</goal>
+                    </goals>
+                    <configuration>
+                        <headerType>console</headerType>
+                        <outfile>target/MicroBalancer.exe</outfile>
+                        <jar>target/MicroBalancer-1.0.jar</jar>
+                        <errTitle>MicroBalancer</errTitle>
+                        <classPath>
+                            <mainClass>com.github.omkumargithub.Main</mainClass>
+                            <addDependencies>true</addDependencies>
+                        </classPath>
+                        <jre>
+                            <minVersion>1.8.0</minVersion>
+                            <path>%JAVA_HOME%;%PATH%</path>
+                        </jre>
+                        <versionInfo>
+                            <fileVersion>1.0.0.0</fileVersion>
+                            <txtFileVersion>1.0.0.0</txtFileVersion>
+                            <fileDescription>MicroBalancer Load Balancer</fileDescription>
+                            <copyright>Copyright © 2025</copyright>
+                            <productVersion>1.0.0.0</productVersion>
+                            <txtProductVersion>1.0.0.0</txtProductVersion>
+                            <productName>MicroBalancer</productName>
+                            <internalName>microbalancer</internalName>
+                            <originalFilename>MicroBalancer.exe</originalFilename>
+                        </versionInfo>
+                    </configuration>
+                </execution>
+            </executions>
         </plugin>
     </plugins>
 </build>
